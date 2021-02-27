@@ -15,7 +15,7 @@ public class StompClient {
         this.port = port;
     }
 
-    public void connect(String passcode) throws IOException {
+    public StompMessage connect(String passcode) throws IOException {
         socket = new Socket(host,port);
 
         StompMessage connectMessage = new StompMessage("CONNECT");
@@ -27,6 +27,8 @@ public class StompClient {
 
         if (!response.getMessageType().equals("CONNECTED"))
             throw new RuntimeException("Unexpected response: " + response.getMessageType());
+
+        return response;
     }
 
     public void subscribe(String destination) throws IOException {

@@ -34,7 +34,7 @@ public class StompMessage {
         String type = readUntil(inputStream, DELIMITER);
 
         if (type.equals("")) {
-            this.messageType = "HEARTBEAT";
+            this.messageType = "!HEARTBEAT";
             this.body = "";
             return;
         }

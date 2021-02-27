@@ -60,7 +60,9 @@ public class Main {
         LOG.info("Connecting to STOMP bus at: " + REALTIME_HOST);
 
         StompClient stompClient = new StompClient(REALTIME_HOST,REALTIME_PORT);
-        stompClient.connect(authResponse.getAccessToken());
+        StompMessage connectionResponse = stompClient.connect(authResponse.getAccessToken());
+
+        LOG.info("Connection result: " + connectionResponse);
 
         LOG.info("Subscribing to: " + TOPIC_OBSERVATIONS);
 
@@ -71,18 +73,9 @@ public class Main {
 
             LOG.info("Received message: " + stompMessage);
 
-            System.out.println("TYPE " + stompMessage.getMessageType());
-
-            stompMessage.getHeaders().forEach((s, strings) -> {
-                System.out.format("HEADER %s : %s\n",s,strings);
-            });
-
-            System.out.println("BODY " + stompMessage.getBody());
-
             if (TOPIC_OBSERVATIONS.equals(stompMessage.getFirstHeader("destination"))){
                 Observations observations = objectMapper.readValue(stompMessage.getBody(),Observations.class);
-
-                observations.forEach(System.out::println);
+                observations.forEach(observation -> LOG.info("Received: " + observation));
             }
         }
 
