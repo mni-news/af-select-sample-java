@@ -12,9 +12,14 @@ import org.apache.http.impl.client.HttpClients;
 import stomp.StompClient;
 import stomp.StompMessage;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 public class Main {
+
+    private static final Logger LOG = Logger.getLogger(Main.class.getCanonicalName());
 
 
     private static final String AUTH_URL = "https://api.alphaflash.com/api/auth/alphaflash-client/token";
@@ -23,6 +28,10 @@ public class Main {
     public static final String TOPIC_OBSERVATIONS = "/topic/observations";
 
     public static void main(String[] args) throws IOException {
+
+        Properties properties = new Properties();
+        properties.load(new FileReader("credentials.properties"));
+
         HttpClient httpClient = HttpClients.createDefault();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -30,24 +39,37 @@ public class Main {
         HttpPost post = new HttpPost(AUTH_URL);
         post.setEntity(
                 new StringEntity(
-                        objectMapper.writeValueAsString(new AuthRequest("dev","4Development")),
+                        objectMapper.writeValueAsString(
+                                new AuthRequest(properties.getProperty("username"),properties.getProperty("password"))
+                        ),
                         ContentType.APPLICATION_JSON
                 )
         );
 
+        LOG.info("Fetching auth token");
+
         HttpResponse response = httpClient.execute(post);
+
+        if (response.getStatusLine().getStatusCode() != 200){
+            LOG.severe("Authentication failed");
+            return;
+        }
 
         AuthResponse authResponse = objectMapper.readValue(response.getEntity().getContent(), AuthResponse.class);
 
-        System.out.println(authResponse.getAccessToken());
+        LOG.info("Connecting to STOMP bus at: " + REALTIME_HOST);
 
         StompClient stompClient = new StompClient(REALTIME_HOST,REALTIME_PORT);
-
         stompClient.connect(authResponse.getAccessToken());
+
+        LOG.info("Subscribing to: " + TOPIC_OBSERVATIONS);
+
         stompClient.subscribe(TOPIC_OBSERVATIONS);
 
         while (true){
             StompMessage stompMessage = stompClient.nextMessage();
+
+            LOG.info("Received message: " + stompMessage);
 
             System.out.println("TYPE " + stompMessage.getMessageType());
 

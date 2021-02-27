@@ -119,4 +119,12 @@ public class StompMessage {
             return headers.get(s).get(0);
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "StompMessage{" +
+                "messageType='" + messageType + '\'' +
+                ", headers=" + headers +
+                '}';
+    }
 }
