@@ -1,9 +1,15 @@
-package stomp;
+package com.alphaflash.select.stomp;
+
+import com.alphaflash.select.Main;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 public class StompClient {
+
+    private static final Logger LOG = Logger.getLogger(Main.class.getCanonicalName());
 
     private final String host;
     private final int port;
@@ -41,6 +47,14 @@ public class StompClient {
 
     public StompMessage nextMessage() throws IOException {
         return new StompMessage(socket.getInputStream());
+    }
+
+    public void shutdown(){
+        try {
+            socket.close();
+        }catch (Exception e){
+            LOG.warning("Error closing socket: " + e.getMessage());
+        }
     }
 
 

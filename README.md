@@ -27,6 +27,6 @@ The sample can be run with the included gradle wrapper:
 
 ## Code
 
- * [DTO Package](src/main/java/dto) - This contains classes to be unmarshalled from the API. 
- * [STOMP Package](src/main/java/stomp) - This is a simple core-java stomp client. 
- * [Main Class](src/main/java/Main.java) - This contains the main method. 
+ * [DTO Package](src/main/java/com.alphaflash.select.dto) - This contains classes to be unmarshalled from the API. 
+ * [STOMP Package](src/main/java/com.alphaflash.select.stomp) - This is a simple core-java com.alphaflash.select.stomp client. 
+ * [com.alphaflash.select.Main Class](src/main/java/com.alphaflash.select.Main.java) - This contains the main method. 

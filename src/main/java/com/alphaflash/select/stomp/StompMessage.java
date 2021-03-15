@@ -1,4 +1,4 @@
-package stomp;
+package com.alphaflash.select.stomp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
