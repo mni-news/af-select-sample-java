@@ -56,13 +56,8 @@ public class SelectDataService {
     }
 
     private HttpGet getHttpGet(String format) {
-        HttpGet calendarRequest = new HttpGet(
-                format
-        );
-        calendarRequest.addHeader(
-                "Authorization",
-                String.format("Bearer %s", accessToken.get())
-        );
+        HttpGet calendarRequest = new HttpGet(format);
+        calendarRequest.addHeader("Authorization", String.format("Bearer %s", accessToken.get()));
         return calendarRequest;
     }
 

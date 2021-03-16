@@ -27,12 +27,6 @@ public class Main {
     private static final Logger LOG = Logger.getLogger(Main.class.getCanonicalName());
 
 
-    private static final String AUTH_URL = "https://api.alphaflash.com/api/auth/alphaflash-client/token";
-    private static final String EVENTS_URL = "https://api.alphaflash.com/api/select/calendar/events";
-    private static final String REALTIME_HOST = "select.alphaflash.com";
-    private static final int REALTIME_PORT= 61613;
-    public static final String TOPIC_OBSERVATIONS = "/topic/observations";
-
     public static void main(String[] args) throws IOException {
 
         Properties properties = new Properties();

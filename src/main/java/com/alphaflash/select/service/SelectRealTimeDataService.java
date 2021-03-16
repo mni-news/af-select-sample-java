@@ -42,12 +42,11 @@ public class SelectRealTimeDataService implements Runnable{
             StompMessage connectionResponse = stompClient.connect(accessToken.get());
 
             LOG.info("Connection result: " + connectionResponse);
-
             LOG.info("Subscribing to: " + SelectConstants.TOPIC_OBSERVATIONS);
 
             stompClient.subscribe(SelectConstants.TOPIC_OBSERVATIONS);
 
-            while (true) {
+            while (running.get()) {
                 StompMessage stompMessage = stompClient.nextMessage();
 
                 LOG.info("Received message: " + stompMessage);
@@ -61,9 +60,6 @@ public class SelectRealTimeDataService implements Runnable{
             }
 
         }catch (Exception e){
-
-
-
 
             stompClient.shutdown();
 
